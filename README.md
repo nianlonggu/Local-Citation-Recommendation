@@ -6,6 +6,15 @@ The same experiments can be conducted on other datasets with proper changes on t
 
 # Hardware Requirement
 1. OS: Ubuntu 20.04 or 18.04
+2. If you want to train the prefetcher and reranker from scratch, you can use:
+    1) 2 x nVidia RTX A6000 48GB GPUs, or
+    2) 8 x GTX 1080Ti (11GB) GPUs
+
+  In other words, the total GPU RAM should be around 90 GB. We need a large RAM because we need to do within-minibatch traiplet mining so we used a large batch size (around 512). <br>
+  Note that the training example below uses 2 GPUs by default. If you want to use 8 GPUs, you need to modify the configuration files in the folder src/prefetch/config/ and src/rerank/config. The modification includes 1) changing the number of examples per gpu process in the overall_training.config, and 2) changing the value of "n_device" from 2 to 8.
+  
+3. If you want to run the chapter **Use The Prefetcher in Python Code** and the chapter **Use The Reranker in Python Code**, a single GPU should be enough.
+
 
 # Install Dependencies
 1. Install anaconda;
