@@ -17,7 +17,21 @@ conda create -n lcr python=3.7 -y
 ```bash
 source activate lcr
 ```
- 
+4. Install requirements:
+
+numpy
+tqdm
+matplotlib
+nltk
+
+nltk.download('omw-1.4')
+nltk.download('stopwords')
+nltk.download('wordnet')
+
+cupy
+
+
+conda install pytorch cudatoolkit=11.3 -c pytorch -y   (pytorch-1.10.1)
 
 
 # Download Dataset, Embedding and Vocabulary
