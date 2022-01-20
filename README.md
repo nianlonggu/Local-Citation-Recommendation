@@ -296,4 +296,13 @@ print("After reranking, the position of the actually cited paper:",count+1)
 So the reranker clearly helps.
 
 
+# References
 
+When using our code or models for your application, please cite the following paper:
+
+@article{gu2021local,
+  title={Local Citation Recommendation with Hierarchical-Attention Text Encoder and SciBERT-based Reranking},
+  author={Gu, Nianlong and Gao, Yingqiang and Hahnloser, Richard HR},
+  journal={arXiv preprint arXiv:2112.01206},
+  year={2021}
+}
