@@ -7,7 +7,10 @@ from tqdm import tqdm
 import pickle
 import numpy as np
 import matplotlib.pyplot as plt
-import sent2vec
+try:
+    import sent2vec
+except:
+    pass
 import torch
 
 if torch.cuda.is_available():
