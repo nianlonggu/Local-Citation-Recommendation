@@ -5,17 +5,41 @@ Here we walk thourgh the training, testing and practical usage of the whole pref
 The same experiments can be conducted on other datasets with proper changes on the configuration files in the config/ folder.
 
 # Hardware Requirement
+1. OS: Ubuntu 20.04 or 18.04
 
 # Install Dependencies
+1. Install anaconda;
+2. Create an anaconda environment (environment name: lcr, python version=3.7):
+```bash
+conda create -n lcr python=3.7 -y
+```
+3. Activate the environment:
+```bash
+source activate lcr
+```
+ 
 
 
-# Dataset
-Download and unzip the ACL-200 dataset. Put the unzipped files to the folder  MAIN/data/acl/<br> Inside the data/acl folder it looks like: <br>
+# Download Dataset, Embedding and Vocabulary
+For simplicity, we refer **MAIN** as the main folder of the repo.
+
+Downloading link to all the data:         
+
+This link contains all the data (dataset, embedding, vocabulary and model) for the experiments. After downloading and unzipping, we can use part of them based on different usage scenarios:
+1. Among them, the ACL-200 dataset, glove embedding, glove vocabulary are necessary for all experiments.
+2. The pretrained prefetching model on ACL-200 is only needed if you want to directly run the code in chapter **Use The Prefetcher in Python Code** without training from scratch;
+3. The pretrained reranking model on ACL-200 is only needed if you want to directly run the code in chapter **Use The Reranker in Python Code** without training from scratch.
+
+
+## Dataset
+Download and unzip the ACL-200 dataset. Put the unzipped files to the folder  MAIN/data/acl/<br> 
+Inside the data/acl folder it looks like: <br>
  > contexts.json  test.json    papers.json    train.json  val.json test_with_oracle_prefetched_ids_for_reranking.json
+## Embedding, Vocabulary 
+Put the glove embedding  "unigram_embeddings_200dim.pkl" and vocabulary  "vocabulary_200dim.pkl" to the folder MAIN/model/glove/
 
 # Prefetching Part
 ## Training
-For simplicity, we refer "MAIN" as the main folder of the repo.
 
 Go to the folder MAIN/src/prefetch/, and run the following command:
 ```bash
