@@ -17,21 +17,31 @@ conda create -n lcr python=3.7 -y
 ```bash
 source activate lcr
 ```
-4. Install requirements:
-
-numpy
-tqdm
-matplotlib
-nltk
-
+4. Install requirements (after activate the anaconda environment):
+1) Install the following package with pip:
+numpy<br>
+tqdm<br>
+matplotlib<br>
+nltk<br>
+2) Install the following package with conda:
+cupy:
+```bash
+conda install -c conda-forge cupy
+```
+pytorch (pytorch 1.9.0):
+```bash
+conda install -c conda-forge pytorch-gpu
+```
+3) Download nltk data. Run the following Python code in the anaconda environment:
+```python
+import nltk
 nltk.download('omw-1.4')
 nltk.download('stopwords')
 nltk.download('wordnet')
+```
 
-cupy
 
 
-conda install pytorch cudatoolkit=11.3 -c pytorch -y   (pytorch-1.10.1)
 
 
 # Download Dataset, Embedding and Vocabulary
