@@ -56,7 +56,8 @@ nltk.download('wordnet')
 # Download Dataset, Embedding and Vocabulary
 For simplicity, we refer **MAIN** as the main folder of the repo.
 
-Downloading link to all the data:         
+Downloading link to all the data:  [DATA Link](https://drive.google.com/drive/folders/1hTgzScKbY2te9r6UfXJeSAPlPnekPLx9?usp=sharing)
+ (This experiment is demoed using the ACL-200 dataset.)
 
 This link contains all the data (dataset, embedding, vocabulary and model) for the experiments. After downloading and unzipping, we can use part of them based on different usage scenarios:
 1. Among them, the ACL-200 dataset, glove embedding, glove vocabulary are necessary for all experiments.
