@@ -41,7 +41,11 @@ pytorch (pytorch 1.9.0):
 ```bash
 conda install -c conda-forge pytorch-gpu
 ```
-3) Download nltk data. Run the following Python code in the anaconda environment:
+3) Install transformers via:
+```bash
+pip install transformers
+```
+4) Download nltk data. Run the following Python code in the anaconda environment:
 ```python
 import nltk
 nltk.download('omw-1.4')
