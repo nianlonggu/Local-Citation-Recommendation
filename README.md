@@ -27,7 +27,7 @@ conda create -n lcr python=3.7 -y
 source activate lcr
 ```
 4. Install requirements (after activate the anaconda environment):
-1) Install the following package with pip:
+1) Install the following package with pip:<br>
 numpy<br>
 tqdm<br>
 matplotlib<br>
@@ -131,9 +131,9 @@ python test.py -config_file_path config/acl/test_NN.config
 ## Use The Prefetcher in Python Code
 
 Before runing this code, make sure the following steps have been done in the same order:
-1. The dataset for the ACL-200 have been downloaded from HERE, and placed at the correct position MAIN/data/acl/
-2. The Glove embedding and vocabulary have been downloaded from HERE, and placed at the position MAIN/model/glove/. Inside MAIN/model/glove/ there will be two files: unigram_embeddings_200dim.pkl, vocabulary_200dim.pkl
-3. The best checkpoint of the prefetcher has been trained, selected, and placed at MAIN/model/prefetch/acl/, or you can download the checkpoint HERE and place it at MAIN/model/prefetch/acl/.
+1. The dataset for the ACL-200 have been downloaded from [DATA Link](https://drive.google.com/drive/folders/1hTgzScKbY2te9r6UfXJeSAPlPnekPLx9?usp=sharing), and placed at the correct position MAIN/data/acl/
+2. The Glove embedding and vocabulary have been downloaded from [DATA Link](https://drive.google.com/drive/folders/1hTgzScKbY2te9r6UfXJeSAPlPnekPLx9?usp=sharing), and placed at the position MAIN/model/glove/. Inside MAIN/model/glove/ there will be two files: unigram_embeddings_200dim.pkl, vocabulary_200dim.pkl
+3. The best checkpoint of the prefetcher has been trained, selected, and placed at MAIN/model/prefetch/acl/, or you can download the checkpoint [DATA Link](https://drive.google.com/drive/folders/1hTgzScKbY2te9r6UfXJeSAPlPnekPLx9?usp=sharing) and place it at MAIN/model/prefetch/acl/.
 4. The paper embeddings have been computed using the embedding computation script shown above.
 
 Then switch the working directory to MAIN/ , and then run the following code:
