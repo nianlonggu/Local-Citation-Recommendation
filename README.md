@@ -231,8 +231,8 @@ python test.py -config_file_path config/acl/scibert/testing_oracle_prefetch.conf
 ## Use The Reranker in Python Code
 
 Before runing this code, make sure the following steps have been done in the same order:
-1. The dataset for the ACL-200 have been downloaded from HERE, and placed at the correct position MAIN/data/acl/
-2. The best checkpoint of the reranker has been trained, selected, and placed at MAIN/model/prefetch/acl/, or you can download the checkpoint HERE and place it at MAIN/model/rerank/acl/scibert/NN_prefetch/
+1. The dataset for the ACL-200 have been downloaded from [DATA Link](https://drive.google.com/drive/folders/1hTgzScKbY2te9r6UfXJeSAPlPnekPLx9?usp=sharing), and placed at the correct position MAIN/data/acl/
+2. The best checkpoint of the reranker has been trained, selected, and placed at MAIN/model/prefetch/acl/, or you can download the checkpoint [DATA Link](https://drive.google.com/drive/folders/1hTgzScKbY2te9r6UfXJeSAPlPnekPLx9?usp=sharing) and place it at MAIN/model/rerank/acl/scibert/NN_prefetch/
 
 Then switch the working directory to MAIN/ , and then run the following code:
 
