@@ -1,5 +1,5 @@
 # Local-Citation-Recommendation
-Code for ECIR 2022 paper "Local Citation Recommendation with Hierarchical-Attention Text Encoder and SciBERT-based Reranking"
+Code for ECIR 2022 paper Local Citation Recommendation with Hierarchical-Attention Text Encoder and SciBERT-based Reranking
 
 Here we walk thourgh the training, testing and practical usage of the whole prefetching-reranking citation recommendation pipeline on the ACL-200 dataset. 
 The same experiments can be conducted on other datasets with proper changes on the configuration files in the config/ folder.
