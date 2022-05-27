@@ -306,10 +306,26 @@ So the reranker clearly helps.
 When using our code or models for your application, please cite the following paper:
 
 ```
-@article{gu2021local,
-  title={Local Citation Recommendation with Hierarchical-Attention Text Encoder and SciBERT-based Reranking},
-  author={Gu, Nianlong and Gao, Yingqiang and Hahnloser, Richard HR},
-  journal={arXiv preprint arXiv:2112.01206},
-  year={2021}
+@InProceedings{10.1007/978-3-030-99736-6_19,
+author="Gu, Nianlong
+and Gao, Yingqiang
+and Hahnloser, Richard H. R.",
+editor="Hagen, Matthias
+and Verberne, Suzan
+and Macdonald, Craig
+and Seifert, Christin
+and Balog, Krisztian
+and N{\o}rv{\aa}g, Kjetil
+and Setty, Vinay",
+title="Local Citation Recommendation with Hierarchical-Attention Text Encoder and SciBERT-Based Reranking",
+booktitle="Advances in Information Retrieval",
+year="2022",
+publisher="Springer International Publishing",
+address="Cham",
+pages="274--288",
+abstract="The goal of local citation recommendation is to recommend a missing reference from the local citation context and optionally also from the global context. To balance the tradeoff between speed and accuracy of citation recommendation in the context of a large-scale paper database, a viable approach is to first prefetch a limited number of relevant documents using efficient ranking methods and then to perform a fine-grained reranking using more sophisticated models. In that vein, BM25 has been found to be a tough-to-beat approach to prefetching, which is why recent work has focused mainly on the reranking step. Even so, we explore prefetching with nearest neighbor search among text embeddings constructed by a hierarchical attention network. When coupled with a SciBERT reranker fine-tuned on local citation recommendation tasks, our hierarchical Attention encoder (HAtten) achieves high prefetch recall for a given number of candidates to be reranked. Consequently, our reranker requires fewer prefetch candidates to rerank, yet still achieves state-of-the-art performance on various local citation recommendation datasets such as ACL-200, FullTextPeerRead, RefSeer, and arXiv.",
+isbn="978-3-030-99736-6"
 }
+
+
 ```
