@@ -88,7 +88,7 @@ class RerankDataset(Dataset):
         for candidate_id in candidate_id_list:
             candidate_text = self.get_paper_text( candidate_id )
             
-            query_text_list.append( context_text + self.sep_token + citing_text )
+            query_text_list.append( " ".join( citing_text.split()[:int( self.max_input_length * 0.35 ) ] ) + self.sep_token + context_text )
             candidate_text_list.append( candidate_text )
 
 

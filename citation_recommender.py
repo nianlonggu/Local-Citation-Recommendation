@@ -95,8 +95,9 @@ class Reranker:
         candidate_list = original_candidate_list.copy()
         if len(candidate_list) == 0:
             return []
+        
         global_context = citing_title + " "+ citing_abstract
-        query_text = local_context + self.sep_token + global_context
+        query_text = " ".join( global_context.split()[:int( max_input_length * 0.35 ) ] ) + self.sep_token + local_context
         
         score_list = []
         for pos in range( 0, len(candidate_list), reranking_batch_size ):
