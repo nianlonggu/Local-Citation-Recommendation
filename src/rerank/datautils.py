@@ -11,16 +11,15 @@ class RerankDataset(Dataset):
                  tokenizer = None, 
                  rerank_top_K = 2000,
                  max_input_length = 512, 
-                 max_output_length = 512,
-                 padding = "max_length", truncation=True,
+                 padding = "max_length", 
+                 truncation=True,
                  sep_token = "<sep>",
                  cit_token = "<cit>",
                  eos_token = "<eos>",
                  is_training = True,
 
                  n_document = 32,
-                 max_n_positive = 10,
-                 cr_mode = "local"
+                 max_n_positive = 1
 
                 ):
         ## structure of the corpus
@@ -30,7 +29,6 @@ class RerankDataset(Dataset):
         self.tokenizer = tokenizer
         self.rerank_top_K = rerank_top_K
         self.max_input_length = max_input_length
-        self.max_output_length = max_output_length
         self.padding = padding
         self.truncation = truncation
         self.sep_token = sep_token
@@ -40,7 +38,6 @@ class RerankDataset(Dataset):
         self.is_training = is_training
         self.n_document = n_document
         self.max_n_positive = max_n_positive
-        self.cr_mode = cr_mode
 
         self.irrelevance_level_for_positive = 0
         self.irrelevance_level_for_negative = 1
@@ -59,15 +56,11 @@ class RerankDataset(Dataset):
         ## step 2: get the candidate documents
         ## step 3: construct the input to the scorer model
         data = self.corpus[idx]
-        if self.cr_mode == "local":
-            context_id = data["context_id"]
-            citing_id = self.context_database[context_id]["citing_id"]
-            context_text = self.context_database[context_id]["masked_text"].replace( "TARGETCIT", self.cit_token )
-            citing_text = self.get_paper_text( citing_id )
-        elif self.cr_mode == "global":
-            citing_id = data["id"]
-            citing_text = self.get_paper_text( citing_id )
 
+        context_id = data["context_id"]
+        citing_id = self.context_database[context_id]["citing_id"]
+        context_text = self.context_database[context_id]["masked_text"].replace( "TARGETCIT", self.cit_token )
+        citing_text = self.get_paper_text( citing_id )
 
         positive_ids = data["positive_ids"]
         positive_ids_set = set( positive_ids )
@@ -89,29 +82,17 @@ class RerankDataset(Dataset):
             irrelevance_levels_list = np.array( [ self.irrelevance_level_for_positive if candidate_id in positive_ids_set  else self.irrelevance_level_for_negative for candidate_id in candidate_id_list  ] ).astype(np.float32)
 
 
-        input_text_list = []
-        output_text_list = []
+        query_text_list = []
+        candidate_text_list = []
 
         for candidate_id in candidate_id_list:
             candidate_text = self.get_paper_text( candidate_id )
-            if self.cr_mode == "local":
-                #input_text = " ".join( citing_text.split()[ : int( self.max_input_length*0.5 * 0.7 ) ]  ) + \
-                #            self.sep_token + " ".join( candidate_text.split()[ : int( self.max_input_length*0.5 * 0.7 ) ]   )
-                #output_text = context_text
-
-                # This is for the mode: gClC_R, which performs worse 
-                input_text = " ".join( citing_text.split()[ : int( self.max_input_length*0.5 * 0.7 ) ] ) + self.sep_token + context_text
-                output_text = candidate_text
-
-            elif self.cr_mode == "global":
-                input_text = " ".join( citing_text.split()[ : int( self.max_input_length * 0.7 ) ]  )
-                output_text = candidate_text
-
-            input_text_list.append( input_text )
-            output_text_list.append( output_text )
+            
+            query_text_list.append( context_text + self.sep_token + citing_text )
+            candidate_text_list.append( candidate_text )
 
 
-        encoded_seqs = self.tokenizer( input_text_list,output_text_list,  max_length = self.max_input_length + self.max_output_length , padding =  self.padding , truncation = self.truncation)
+        encoded_seqs = self.tokenizer( query_text_list,candidate_text_list,  max_length = self.max_input_length , padding =  self.padding , truncation = self.truncation)
         
         for key in encoded_seqs:
             encoded_seqs[key] = np.asarray(encoded_seqs[key])

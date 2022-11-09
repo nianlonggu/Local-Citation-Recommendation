@@ -58,11 +58,8 @@ if __name__ == "__main__":
 
     tokenizer = AutoTokenizer.from_pretrained( args.initial_model_path )
     tokenizer.add_special_tokens( { 'additional_special_tokens': ['<cit>','<sep>','<eos>'] } )
-
-    corpus = []
-    with open(args.corpus_path, "r") as f:
-        for line in tqdm(f):
-            corpus.append( json.loads( line ) )
+                        
+    corpus = json.load( open(args.corpus_path, "r") )
 
     if args.size == 0:
         corpus = corpus[args.start:]
@@ -70,18 +67,12 @@ if __name__ == "__main__":
         corpus = corpus[args.start:args.start + args.size]
     paper_database = json.load(open(args.paper_database_path))
 
-    if args.cr_mode == "local":
-        context_database = json.load( open(args.context_database_path) )
-    elif args.cr_mode == "global":
-        context_database = {}
-
+    context_database = json.load( open(args.context_database_path) )
 
     rerank_dataset = RerankDataset( corpus, paper_database, context_database, tokenizer,
                                    rerank_top_K = args.rerank_top_K,
                                    max_input_length = args.max_input_length,
-                                   max_output_length = args.max_output_length,
-                                   is_training = False, 
-                                   cr_mode = args.cr_mode
+                                   is_training = False
                                     )
     rerank_dataloader = DataLoader( rerank_dataset, batch_size= args.n_query_per_batch, shuffle= False, 
                                   num_workers= args.num_workers,  drop_last= False )

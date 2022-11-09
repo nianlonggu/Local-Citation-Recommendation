@@ -7,6 +7,7 @@ import json
 import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("-config_file_path" )
+parser.add_argument("-mode" )
 args= parser.parse_args()
 
 
@@ -26,10 +27,117 @@ def stringfy( item ):
     else:
         return str(item)
 
-    
-    
-for loop_count in range( config["max_num_loops_for_training_updating_embedding_and_prefetched_ids"] ):
+if args.mode == "compute_paper_embedding":
     subprocess.run(" ".join(list(map(stringfy, 
+                        [ "python", "compute_papers_embedding.py",
+                          "-unigram_words_path",config["unigram_words_path"],
+                          "-prefetch_model_folder",config["prefetch_model_folder"],
+                          "-prefetch_embedding_path",config["prefetch_embedding_path"],
+                          "-paper_database_path",config["paper_database_path"],
+                          "-shuffle", 0,
+                          "-size", 0,
+                          "-encoder_gpu_list", encoder_gpu_list,
+                          "-embed_dim",config["embed_dim"],
+                          "-num_heads",config["num_heads"],
+                          "-hidden_dim",config["hidden_dim"],
+                          "-max_seq_len",config["max_seq_len"],
+                          "-max_doc_len",config["max_doc_len"],
+                          "-n_para_types",config["n_para_types"],
+                          "-num_enc_layers",config["num_enc_layers"],
+                          "-document_title_label",config["document_title_label"],
+                          "-document_abstract_label",config["document_abstract_label"],
+                          "-document_fullbody_label",config["document_fullbody_label"],
+                        ]           
+                   ))), shell = True
+                  )
+elif args.mode == "test":
+    subprocess.run(" ".join(list(map(stringfy, 
+                        [ "python", "test.py",
+                          "-log_folder",config["log_folder"],
+                          "-log_file_name", config["test_log_file_name"],
+                          "-K_list",config["K_list"],
+                          "-encoder_gpu_list", encoder_gpu_list,
+                          "-ranker_gpu_list", ranker_gpu_list,
+                          "-input_corpus_path", config["input_corpus_path_for_test"],
+                          "-unigram_words_path",config["unigram_words_path"],
+                          "-prefetch_model_folder",config["prefetch_model_folder"],
+                          "-prefetch_embedding_path",config["prefetch_embedding_path"],
+                          "-paper_database_path",config["paper_database_path"],
+                          "-context_database_path",config["context_database_path"],
+                          "-embed_dim",config["embed_dim"],
+                          "-num_heads",config["num_heads"],
+                          "-hidden_dim",config["hidden_dim"],
+                          "-max_seq_len",config["max_seq_len"],
+                          "-max_doc_len",config["max_doc_len"],
+                          "-n_para_types",config["n_para_types"],
+                          "-num_enc_layers",config["num_enc_layers"],
+                          "-citation_title_label",config["citation_title_label"],
+                          "-citation_abstract_label",config["citation_abstract_label"],
+                          "-citation_context_label",config["citation_context_label"],
+                        ]           
+                   ))), shell = True
+                  )
+elif args.mode == "get_training_examples_with_prefetched_ids_for_reranking":
+    subprocess.run(" ".join(list(map(stringfy, 
+                        [ "python", "get_prefetched_ids.py",
+                          "-shuffle", 1,
+                          "-size", config["num_training_examples_with_prefetched_ids_for_reranking"],
+                          "-top_K", config["top_K_prefetched_ids_for_reranking"],
+                          "-encoder_gpu_list", encoder_gpu_list,
+                          "-ranker_gpu_list", ranker_gpu_list,
+                          "-input_corpus_path", config["input_corpus_path_for_get_prefetched_ids_during_training"],
+                          "-output_corpus_path", config["output_corpus_path_for_get_prefetched_ids_during_training"],
+                          "-unigram_words_path",config["unigram_words_path"],
+                          "-prefetch_model_folder",config["prefetch_model_folder"],
+                          "-prefetch_embedding_path",config["prefetch_embedding_path"],
+                          "-paper_database_path",config["paper_database_path"],
+                          "-context_database_path",config["context_database_path"],
+                          "-embed_dim",config["embed_dim"],
+                          "-num_heads",config["num_heads"],
+                          "-hidden_dim",config["hidden_dim"],
+                          "-max_seq_len",config["max_seq_len"],
+                          "-max_doc_len",config["max_doc_len"],
+                          "-n_para_types",config["n_para_types"],
+                          "-num_enc_layers",config["num_enc_layers"],
+                          "-citation_title_label",config["citation_title_label"],
+                          "-citation_abstract_label",config["citation_abstract_label"],
+                          "-citation_context_label",config["citation_context_label"],
+                        ]           
+                   ))), shell = True
+                  )
+    
+elif args.mode == "get_val_examples_with_prefetched_ids_for_reranking":
+    subprocess.run(" ".join(list(map(stringfy, 
+                        [ "python", "get_prefetched_ids.py",
+                          "-shuffle", 1,
+                          "-size", config["num_val_examples_with_prefetched_ids_for_reranking"],
+                          "-top_K", config["top_K_prefetched_ids_for_reranking"],
+                          "-encoder_gpu_list", encoder_gpu_list,
+                          "-ranker_gpu_list", ranker_gpu_list,
+                          "-input_corpus_path", config["input_corpus_path_for_validation"],
+                          "-output_corpus_path", config["output_corpus_path_for_validation_with_prefetched_ids"],
+                          "-unigram_words_path",config["unigram_words_path"],
+                          "-prefetch_model_folder",config["prefetch_model_folder"],
+                          "-prefetch_embedding_path",config["prefetch_embedding_path"],
+                          "-paper_database_path",config["paper_database_path"],
+                          "-context_database_path",config["context_database_path"],
+                          "-embed_dim",config["embed_dim"],
+                          "-num_heads",config["num_heads"],
+                          "-hidden_dim",config["hidden_dim"],
+                          "-max_seq_len",config["max_seq_len"],
+                          "-max_doc_len",config["max_doc_len"],
+                          "-n_para_types",config["n_para_types"],
+                          "-num_enc_layers",config["num_enc_layers"],
+                          "-citation_title_label",config["citation_title_label"],
+                          "-citation_abstract_label",config["citation_abstract_label"],
+                          "-citation_context_label",config["citation_context_label"],
+                        ]           
+                   ))), shell = True
+                  )
+    
+elif args.mode == "train":
+    for loop_count in range( config["max_num_loops_for_training_updating_embedding_and_prefetched_ids"] ):
+        subprocess.run(" ".join(list(map(stringfy, 
                         [ "python","train.py",
                           "-unigram_words_path", config["unigram_words_path"],
                           "-unigram_embedding_path", config["unigram_embedding_path"],
@@ -75,7 +183,7 @@ for loop_count in range( config["max_num_loops_for_training_updating_embedding_a
                     ))), shell = True
                   )
     
-    subprocess.run(" ".join(list(map(stringfy, 
+        subprocess.run(" ".join(list(map(stringfy, 
                         [ "python", "compute_papers_embedding.py",
                           "-unigram_words_path",config["unigram_words_path"],
                           "-prefetch_model_folder",config["prefetch_model_folder"],
@@ -98,7 +206,7 @@ for loop_count in range( config["max_num_loops_for_training_updating_embedding_a
                    ))), shell = True
                   )
     
-    subprocess.run(" ".join(list(map(stringfy, 
+        subprocess.run(" ".join(list(map(stringfy, 
                         [ "python", "get_prefetched_ids.py",
                           "-shuffle", 1,
                           "-size", config["num_training_examples_with_updated_prefetched_ids_per_loop"],
@@ -126,33 +234,7 @@ for loop_count in range( config["max_num_loops_for_training_updating_embedding_a
                    ))), shell = True
                   )
     
-    
-    if loop_count % config["evaluate_performance_every_n_loop"] == config["evaluate_performance_every_n_loop"] -1:
-
-        subprocess.run(" ".join(list(map(stringfy, 
-                        [ "python", "compute_papers_embedding.py",
-                          "-unigram_words_path",config["unigram_words_path"],
-                          "-prefetch_model_folder",config["prefetch_model_folder"],
-                          "-prefetch_embedding_path",config["prefetch_embedding_path"],
-                          "-paper_database_path",config["paper_database_path"],
-                          "-shuffle", 0,
-                          "-size", 0,
-                          "-encoder_gpu_list", encoder_gpu_list,
-                          "-embed_dim",config["embed_dim"],
-                          "-num_heads",config["num_heads"],
-                          "-hidden_dim",config["hidden_dim"],
-                          "-max_seq_len",config["max_seq_len"],
-                          "-max_doc_len",config["max_doc_len"],
-                          "-n_para_types",config["n_para_types"],
-                          "-num_enc_layers",config["num_enc_layers"],
-                          "-document_title_label",config["document_title_label"],
-                          "-document_abstract_label",config["document_abstract_label"],
-                          "-document_fullbody_label",config["document_fullbody_label"],
-                        ]           
-                   ))), shell = True
-                  )
-        
-        
+            
         subprocess.run(" ".join(list(map(stringfy, 
                         [ "python", "test.py",
                           "-log_folder",config["log_folder"],

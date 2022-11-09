@@ -1,6 +1,5 @@
 from src.prefetch.rankers import PrefetchEncoder
 from src.prefetch.rankers import Ranker as PrefetchRanker
-from src.prefetch.datautils import PrefetchDataset
 import pickle
 import json
 import numpy as np
@@ -25,12 +24,15 @@ class Prefetcher:
                    max_seq_len = 512,
                    max_doc_len = 3,
                    n_para_types = 100,
-                   num_enc_layers = 1
+                   num_enc_layers = 1,
+                   
+                   citation_title_label = 0,
+                   citation_abstract_label = 1,
+                   citation_context_label = 3,
                 ):
         
         with open( vocab_path,"rb") as f:
             words = pickle.load(f)
-        prefetch_dataset = PrefetchDataset(words = words)
         
         encoder = PrefetchEncoder( model_path, vocab_path, 
                                        embed_dim, gpu_list[:1] ,
@@ -41,9 +43,12 @@ class Prefetcher:
         ranker = PrefetchRanker( embedding_path, embed_dim , gpu_list =  gpu_list  )
         ranker.encoder = encoder
         
-        self.prefetch_dataset = prefetch_dataset
         self.ranker = ranker
         self.encoder = encoder
+        
+        self.citation_title_label = citation_title_label
+        self.citation_abstract_label = citation_abstract_label
+        self.citation_context_label = citation_context_label
     
     def get_top_n( self, query, n = 10 ):
         """
@@ -56,9 +61,9 @@ class Prefetcher:
         """ 
         query_text = [
                         [ 
-                            [ query.get("citing_title",""), self.prefetch_dataset.citation_title_label ],
-                            [ query.get("citing_abstract",""), self.prefetch_dataset.citation_abstract_label ],
-                            [ query.get("local_context", "") , self.prefetch_dataset.citation_context_label ]  
+                            [ query.get("citing_title",""), self.citation_title_label ],
+                            [ query.get("citing_abstract",""), self.citation_abstract_label ],
+                            [ query.get("local_context", "") , self.citation_context_label ]  
                         ]  
                     ]
         candidates = self.ranker.get_top_n( n, query_text )
@@ -86,20 +91,20 @@ class Reranker:
             
         self.sep_token = "<sep>"
     
-    def rerank(self, citing_title = "", citing_abstract="", local_context="", original_candidate_list=[ {} ], max_input_length = 450, max_output_length = 62, reranking_batch_size = 50 ):
+    def rerank(self, citing_title = "", citing_abstract="", local_context="", original_candidate_list=[ {} ], max_input_length = 512, reranking_batch_size = 50 ):
         candidate_list = original_candidate_list.copy()
         if len(candidate_list) == 0:
             return []
         global_context = citing_title + " "+ citing_abstract
-        input_text = " ".join( global_context.split()[ : int( max_input_length*0.5 * 0.7 ) ] ) + self.sep_token + local_context
+        query_text = local_context + self.sep_token + global_context
         
         score_list = []
         for pos in range( 0, len(candidate_list), reranking_batch_size ):
             candidate_batch = candidate_list[ pos : pos + reranking_batch_size ]
-            input_text_batch = [ input_text for _ in range( len( candidate_batch ) ) ]
+            query_text_batch = [ query_text for _ in range( len( candidate_batch ) ) ]
             candidate_text_batch = [ item.get("title","")+" "+item.get( "abstract","" )  for item in candidate_batch ]
             
-            encoded_seqs = self.tokenizer( input_text_batch,candidate_text_batch,  max_length = max_input_length + max_output_length , padding =  "max_length" , truncation = True )
+            encoded_seqs = self.tokenizer( query_text_batch, candidate_text_batch,  max_length = max_input_length, padding =  "max_length" , truncation = True )
             for key in encoded_seqs:
                 encoded_seqs[key] = torch.from_numpy(np.asarray(encoded_seqs[key])).to( self.device )
             
