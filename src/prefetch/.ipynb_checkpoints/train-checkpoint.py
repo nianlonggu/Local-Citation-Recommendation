@@ -64,6 +64,7 @@ if __name__ == "__main__":
     parser.add_argument("-print_every", type = int, default = 100  )
     parser.add_argument("-save_every", type = int, default = 200  )
     parser.add_argument("-max_num_iterations", type = int, default = 200  )
+    
     parser.add_argument("-max_n_positive", type = int, default = 1 )
     parser.add_argument("-max_n_hard_negative", type = int, default = 3  )
     parser.add_argument("-max_n_easy_negative", type = int, default = 1  )
