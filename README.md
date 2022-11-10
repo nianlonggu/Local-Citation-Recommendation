@@ -1,9 +1,10 @@
+# Local Citation Recommendation with Hierarchical-Attention Text Encoder and SciBERT-based Reranking
+
 <a href="https://colab.research.google.com/github/nianlonggu/Local-Citation-Recommendation/blob/main/Turorial_Local_Citation_Recommendation.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
-# Local-Citation-Recommendation
 Code for ECIR 2022 paper [Local Citation Recommendation with Hierarchical-Attention Text Encoder and SciBERT-based Reranking](https://link.springer.com/chapter/10.1007/978-3-030-99736-6_19)
 
-# Update 07-11-2022
+## Update 07-11-2022
 1. Cleaned the code for training and testing the prefetching system, to make it easier to read and to run.
 2. Simplify the information in config file, now there is only one global configuration file for prefetching and it is more readable.
 3. Optimize the GPU usage, now the system can be trained using a single GPU.
@@ -11,11 +12,11 @@ Code for ECIR 2022 paper [Local Citation Recommendation with Hierarchical-Attent
 5. Provided a step-by-step tutorial on google colab, illustrating the whole process of training and testing of the entire prefetching and reranking system. Try it here
 <a href="https://colab.research.google.com/github/nianlonggu/Local-Citation-Recommendation/blob/main/Turorial_Local_Citation_Recommendation.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
-# Hardware Requirement
+## Hardware Requirement
 1. OS: Ubuntu 20.04 or 18.04
 2. 1 or more GPUs
 
-# Install Dependencies
+## Install Dependencies
 
 
 ```python
@@ -48,7 +49,7 @@ os.chdir("Local-Citation-Recommendation")
     Requirement already satisfied: numpy<1.26,>=1.20 in /usr/local/lib/python3.7/dist-packages (from cupy-cuda11x) (1.21.6)
 
 
-# Download Glove Embedding 
+## Download Glove Embedding 
 For simplicity, we refer **MAIN** as the main folder of the repo.
 
 
@@ -67,9 +68,9 @@ For simplicity, we refer **MAIN** as the main folder of the repo.
       inflating: model/glove/vocabulary_200dim.pkl  
 
 
-# Prepare Dataset
+## Prepare Dataset
 
-## Option 1: Build your custom dataset 
+### Option 1: Build your custom dataset 
 **This github repo contains a "pseudo" custom dataset that is actually ACL-200**
 
 The custom dataset will contain 5 components: contexts, papers, training/validation/test sets
@@ -84,7 +85,7 @@ val_set = json.load(open("data/custom/val.json"))
 test_set = json.load(open("data/custom/test.json"))
 ```
 
-### contexts contain the local contexts that cite a paper.
+#### contexts contain the local contexts that cite a paper.
 
 
 ```python
@@ -121,7 +122,7 @@ papers[key]
 
 
 
-### train/val/test set contain the context_id (used for get the local context information and cited and citing papers information)
+#### train/val/test set contain the context_id (used for get the local context information and cited and citing papers information)
 
 
 ```python
@@ -144,11 +145,11 @@ You can also download our **processed dataset** (and **pretrained models**) from
 
 (There can be some additional information in the processed dataset other than what have been displayed in the examples above. They are irrelevant information.)
 
-# Prefetching Part
+## Prefetching Part
 In the following experiment, we use the "custom" dataset as an example. This dataset is the same as the ACL dataset. If you have created you dataset, you need to modify the config file at
 
 MAIN/src.prefetch/config/YOUR_DATASET_NAME/global_config.cfg
-## Training
+### Training
 
 This can take around 2h for this custom dataset (the same as ACL-200)
 
@@ -193,7 +194,7 @@ You can specify where to store the checkpoint, log files and other parammeters b
 
 Note: **Before testing, after determining the best checkpoint, removing all the other checkpoints. If there are multiple checkpoints in MAIN/model/prefetch/custom/, the model will use the latest checkpoint by default.**
 
-## Testing
+### Testing
 To test the performance of the prefetching model, we need to first use the model checkpoint to compute the embedding for each paper in the database. This paper embedding is the index of the paper database, which is then used to perform nearest neighbor search. Then the next step is the test the prefetching performance.
 
 
@@ -239,9 +240,9 @@ Step 2: Test the prefetching performance on the test set
     Finished!
 
 
-# Reranking Part
+## Reranking Part
 
-## Training
+### Training
 In order to train the reranker, we need to first create the training dataset. More specifically, for each query in the training set, we first use the trained HAtten prefetcher to prefetch a list of (2000) candidates. Then within the 2000 prefetched candidates we can construct triplets to train the reranker.
 
 
@@ -304,7 +305,7 @@ After get the prefetched ids for training and validstion set, we can start train
     ^C
 
 
-# Use The HAtten Prefetcher and the SciBERT Reranker in Python Code
+## Use The HAtten Prefetcher and the SciBERT Reranker in Python Code
 
 Before run this code, we should have trained the prefetching and the reranking models and know the path to the checkpoint of the saved model. (Here I download the pretrained model on ACL-200 for demonstration. If you train using your custom data, skip this and put the trained models' checkpoint to the corresponding model folder.)
 
@@ -335,7 +336,7 @@ except:
     100% 1.32G/1.32G [00:28<00:00, 46.1MB/s]
 
 
-## Load models
+### Load models
 
 
 ```python
@@ -357,11 +358,11 @@ reranker = Reranker( model_path = "model/rerank/custom/scibert/NN_prefetch/model
     - This IS NOT expected if you are initializing BertModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
 
 
-## Get paper recommendations
+### Get paper recommendations
 
 Then we can construct a query, and use the query to find n most relevant papers. The query is a dictionary containing 3 keys: "citing_title","citing_abstract" and "local_context". We can get some real example from the test set, or we can contruct a simple query as follows:
 
-(## You can specify any other values, e.g., 100, 1000 or 2000. Note that the reranking time is proportional to the number of candidates to rerank.) 
+(### You can specify any other values, e.g., 100, 1000 or 2000. Note that the reranking time is proportional to the number of candidates to rerank.) 
 
 
 ```python
@@ -422,7 +423,7 @@ candidate_list = [  {"paper_id": pid,
                      "title":papers[pid].get("title",""),
                      "abstract":papers[pid].get("abstract","")}
                             for pid in candi_list ] 
-# start reranking
+## start reranking
 reranked_candidate_list = reranker.rerank( citing_title,citing_abstract,local_context, candidate_list )
 reranked_candidate_ids = [item["paper_id"] for item in reranked_candidate_list]
 ```
@@ -440,7 +441,7 @@ if refid not in reranked_candidate_ids:
     The truely cited paper's id N12-1044 appears in position: 2 among the reranked ids.
 
 
-## Evaluation of the whole prefetching and reranking pipeline
+### Evaluation of the whole prefetching and reranking pipeline
 
 
 We use HAtten to prefetch 100 candidates and then rerank them and we record the Recall@10 in the final recommendations  (We test this on 100 test examples only for demonstration)
@@ -500,7 +501,7 @@ print("The average recall@%d: %.4f"%( top_K, np.mean(hit_list)))
 
 This value is close to the results on ACL-200 in Table 4 in the paper, where we tested using full test set.
 
-# References
+## References
 When using our code or models for your application, please cite the following paper:
 
 ```
