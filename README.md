@@ -9,7 +9,9 @@ Code for ECIR 2022 paper [Local Citation Recommendation with Hierarchical-Attent
 2. Simplify the information in config file, now there is only one global configuration file for prefetching and it is more readable.
 3. Optimize the GPU usage, now the system can be trained using a single GPU.
 4. Introduced the structure of the dataset and showed how to build your custom dataset and train a citation recommendation system on that.
-5. Provided a step-by-step tutorial on google colab, illustrating the whole process of training and testing of the entire prefetching and reranking system. Try it here
+5. Provided a step-by-step tutorial on google colab, illustrating the whole process of training and testing of the entire prefetching and reranking system. 
+https://github.com/nianlonggu/Local-Citation-Recommendation/blob/main/Turorial_Local_Citation_Recommendation.ipynb
+Try it here
 <a href="https://colab.research.google.com/github/nianlonggu/Local-Citation-Recommendation/blob/main/Turorial_Local_Citation_Recommendation.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
 ## Hardware Requirement
