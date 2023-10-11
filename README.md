@@ -1,3 +1,4 @@
+[![DOI](https://img.shields.io/badge/DOI-10%2E1007%2F978--3--030--99736--6__19-blue)](https://doi.org/10.1007/978-3-030-99736-6_19)
 # Local Citation Recommendation with Hierarchical-Attention Text Encoder and SciBERT-based Reranking
 
 <a href="https://colab.research.google.com/github/nianlonggu/Local-Citation-Recommendation/blob/main/Turorial_Local_Citation_Recommendation.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
