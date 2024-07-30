@@ -21,36 +21,37 @@ Try it here
 
 ## Install Dependencies
 
+Create anaconda environment
+```bash
+conda create -n hatten python=3.10 -y
+```
+
+Activate the anaconda environment
+```bash
+conda activate hatten
+```
+Install dependencies
+```bash
+pip install -r requirements.txt
+```
+Install CUPY GPU, based on your GUDA version:
+
+For CUDA 11.x:
+```bash
+pip install cupy-cuda11x 
+```
+For CUDA 12.x:
+```bash
+pip install cupy-cuda12x 
+```
+Activate Python environment and download nltk data:
 
 ```python
-!rm -r *
-!git clone https://github.com/nianlonggu/Local-Citation-Recommendation.git
-
-!pip install numpy tqdm matplotlib nltk transformers -q
-!pip install gdown -q
-!pip install cupy-cuda11x  ## suppose CUDA version >= 11.2
-import torch
-torch.__version__
 import nltk
 nltk.download('omw-1.4', quiet=True)
 nltk.download('stopwords',quiet=True)
 nltk.download('wordnet',quiet=True)
-import os
-os.chdir("Local-Citation-Recommendation")
 ```
-
-    Cloning into 'Local-Citation-Recommendation'...
-    remote: Enumerating objects: 302, done.[K
-    remote: Counting objects: 100% (302/302), done.[K
-    remote: Compressing objects: 100% (224/224), done.[K
-    remote: Total 302 (delta 123), reused 139 (delta 46), pack-reused 0[K
-    Receiving objects: 100% (302/302), 20.41 MiB | 10.19 MiB/s, done.
-    Resolving deltas: 100% (123/123), done.
-    Looking in indexes: https://pypi.org/simple, https://us-python.pkg.dev/colab-wheels/public/simple/
-    Requirement already satisfied: cupy-cuda11x in /usr/local/lib/python3.7/dist-packages (11.0.0)
-    Requirement already satisfied: fastrlock>=0.5 in /usr/local/lib/python3.7/dist-packages (from cupy-cuda11x) (0.8.1)
-    Requirement already satisfied: numpy<1.26,>=1.20 in /usr/local/lib/python3.7/dist-packages (from cupy-cuda11x) (1.21.6)
-
 
 ## Download Glove Embedding 
 For simplicity, we refer **MAIN** as the main folder of the repo.
