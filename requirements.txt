@@ -1,0 +1,9 @@
+transformers==4.20.0
+peft==0.9.0
+accelerate==0.27.2
+bitsandbytes==0.41.1
+numpy 
+tqdm 
+matplotlib 
+nltk
+gdown
